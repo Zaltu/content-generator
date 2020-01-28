@@ -1,0 +1,8 @@
+"""
+Define names to export to AIGIS
+"""
+from genesis import Genesis
+
+generate = Genesis()
+
+SKILLS = ["generate"]

@@ -3,7 +3,7 @@ Generate all kinds of data for any use.
 This is a central regrouping place to grab and expose the best parts of multiple content generators for the
 ultimate content experience.
 """
-from fuker import Fuker
+from faker import Faker
 
 class Genesis:
     """
@@ -12,7 +12,7 @@ class Genesis:
     :param bool include_ai: Set to true to include the GPT2 text AI module in genesis. This requires lots of
     RAM. For more requirement information, see the ReadMe.
     """
-    fuker = Fuker()
+    __dummy_faker = Faker()
     ai = None
     def __init__(self, include_ai=False):
         if include_ai:
@@ -30,6 +30,21 @@ class Genesis:
         """
         if attr == "text" and self.ai:
             return self.ai.speak
-        if getattr(self.fuker, attr, None):
-            return getattr(self.fuker, attr)
+
+        if hasattr(self.__dummy_faker, attr):
+            def _wrapper(locale="en_US"):
+                """
+                Wrap the creation of a faker instance so we can generate the correct locale.
+                This is awful, terrible and deplorable, but there's no other way because of the way Faker is
+                designed.
+
+                :param str locale: locale to generate for, defaults to en_US
+
+                :returns: wrapper function
+                :rtype: function
+                """
+                lf = Faker(locale)
+                return lf.__getattr__(attr)()
+            return _wrapper
+
         return self.__getattribute__(attr)

@@ -3,6 +3,7 @@ Generate a paragraph of text based on an input.
 """
 #pylint: disable=not-callable,wrong-import-position,useless-suppression
 # Make sure logging on the transformers module is disabled... We don't care.
+import gc
 import logging
 logging.getLogger('transformers').setLevel(logging.WARNING)
 from random import choice
@@ -24,7 +25,7 @@ TOP_P = 0.7
 
 TOKENIZER = GPT2Tokenizer.from_pretrained("gpt2-xl")
 MODEL = GPT2LMHeadModel.from_pretrained("gpt2-xl")
-
+gc.collect()
 
 def _model(input_ids, model, past, p=TOP_P):  #pylint: disable=invalid-name
     """

@@ -23,12 +23,14 @@ g = Genesis(include_ai=True)
 Normal:
 - __*python3.7*__
     - Faker
+    - lorem
 
 Hardcore:
 - __*python3.7*__
     - torch==1.4.0
     - transformers==2.3.0
     - Faker
+    - lorem
 - Linux (tested on Ubuntu 1.19.1 and CentOS 7.4)
 - \>15GB free hard drive space
 - __*32GB RAM*__

@@ -3,7 +3,9 @@ Generate all kinds of data for any use.
 This is a central regrouping place to grab and expose the best parts of multiple content generators for the
 ultimate content experience.
 """
+#pylint: disable=no-self-use
 from faker import Faker
+import lorem
 
 class Genesis:
     """
@@ -48,3 +50,12 @@ class Genesis:
             return _wrapper
 
         return self.__getattribute__(attr)
+
+    def latin(self):
+        """
+        Return some veru cultured latin speak.
+
+        :returns: random latin text
+        :rtype: str
+        """
+        return lorem.text()

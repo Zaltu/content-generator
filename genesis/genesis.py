@@ -7,6 +7,8 @@ ultimate content experience.
 from faker import Faker
 import lorem
 
+import DDChar
+
 class Genesis:
     """
     In the beginning there was the word, and the word was God, and the word is God.
@@ -53,9 +55,21 @@ class Genesis:
 
     def latin(self):
         """
-        Return some veru cultured latin speak.
+        Return some very cultured latin speak.
 
         :returns: random latin text
         :rtype: str
         """
         return lorem.text()
+
+    def dndchar(self, player=None, level=None):
+        """
+        Get a D&D character
+
+        :param str player: human player, defaults to the DM
+        :param int level: starting level, defaults to 1
+
+        :returns: path to a randomly generate D&D character sheet
+        :rtype: str
+        """
+        return DDChar.generate_dnd_character(player, level)

@@ -8,7 +8,9 @@ import aigis
 import fantasyName
 
 DEFAULT_PLAYER_NAME = "Dungeon Master"
-DEFAULT_SAVE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../", "tmp"))
+DEFAULT_SAVE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "tmp"))
+
+CHAR_ATTR_NAMES = {"strength", "dexterity", "intelligence", "wisdom", "constitution", "charisma"}
 
 def _generate_initial_data(player=None, level=None):
     """
@@ -26,24 +28,58 @@ def _generate_initial_data(player=None, level=None):
         "alignment": random.sample(aigis.dnd.ALIGNMENTS, 1)[0],
         "level": level or 1,
         "race": random.sample(aigis.dnd.RACES, 1)[0],
-        "dndclass": random.sample(aigis.dnd.CLASSES, 1)[0]
+        "class": random.sample(aigis.dnd.CLASSES, 1)[0]
     }
     # Generate subclass if above level 3
     if stats["level"] > 2:
-        stats["subclass"] = random.sample(aigis.dnd.SUBCLASSES[stats["dndclass"]], 1)[0]
+        stats["subclass"] = random.sample(aigis.dnd.SUBCLASSES[stats["class"]], 1)[0]
     # Level 1 HP
-    stats["hp_max"] = aigis.dnd.CLASS_HP[stats["dndclass"]]
+    stats["hp_max"] = aigis.dnd.CLASS_HP[stats["class"]]
     # Level x HP
-    stats["hp_max"] += sum(aigis.dnd.xdy(aigis.dnd.CLASS_HP[stats["dndclass"]], stats["level"]-1))
+    stats["hp_max"] += sum(aigis.dnd.xdy(aigis.dnd.CLASS_HP[stats["class"]], stats["level"]-1))
 
     return stats
 
 
-def generate_dnd_character(logger, player=None, level=None):
+def _generate_random_stats():
+    """
+    Generate 7x(4d6-lowest)-lowest
+
+    :returns: 6x(4d6-lowest)
+    :rtype: list
+    """
+    vals = []
+    for _ in range(0, 7):
+        rolls = aigis.dnd.xdy(6, 4)
+        rolls.sort()
+        rolls = rolls[1:]
+        vals.append(sum(rolls))
+    vals.sort()
+    if sum(vals[1:]) < 10:
+        return _generate_random_stats()
+    return vals[1:]
+
+
+def _generate_attr_values():
+    """
+    Generate values for the character's attributes (Str, Dex, etc...)
+    Uses 7x(4d6-lowest)-lowest and random assignation.
+
+    :returns: stats
+    :rtype: dict
+    """
+    vals = _generate_random_stats()
+    stats = {}
+    for attr in CHAR_ATTR_NAMES:
+        stats[attr] = vals.pop(random.randint(0, len(vals)-1))
+    return stats
+
+
+
+def generate_dnd_character(player=None, level=None):
     """
     Generate a D&D character sheet.
 
-    :param logging.logger logger: logger
     :param str player: human player, defaults to the DM
     :param int level: starting level, defaults to 1
 
@@ -51,17 +87,15 @@ def generate_dnd_character(logger, player=None, level=None):
     :rtype: str
     """
     stats = _generate_initial_data(player, level)
+    stats.update(_generate_attr_values())
 
     # TODO depending on class, generate chosen spells, etc...
 
-    logger.info(f"Generating sheet for {stats['race']} {stats['dndclass']} {stats['name']}")
     paths = aigis.dnd.create_character_sheet(DEFAULT_SAVE_PATH, **stats)
     try:
         # Try and delete the .FDF, we don't care about it
-        logger.debug("Removing FDF...")
         os.remove(paths[1])
     except (OSError, FileNotFoundError):
         # The FDF doesnt seem to exist, does the PDF?
-        logger.warning("Could not remove %s... Something's up..." % paths[1])
         assert os.path.exists(paths[0])
     return paths[0]

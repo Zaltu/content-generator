@@ -39,10 +39,11 @@ def _generate_initial_data(player=None, level=None):
     return stats
 
 
-def generate_dnd_character(player=None, level=None):
+def generate_dnd_character(logger, player=None, level=None):
     """
     Generate a D&D character sheet.
 
+    :param logging.logger logger: logger
     :param str player: human player, defaults to the DM
     :param int level: starting level, defaults to 1
 
@@ -53,11 +54,14 @@ def generate_dnd_character(player=None, level=None):
 
     # TODO depending on class, generate chosen spells, etc...
 
-    paths = aigis.dnd.create_character_sheet(DEFAULT_SAVE_PATH, stats)
+    logger.info(f"Generating sheet for {stats['race']} {stats['dndclass']} {stats['name']}")
+    paths = aigis.dnd.create_character_sheet(DEFAULT_SAVE_PATH, **stats)
     try:
         # Try and delete the .FDF, we don't care about it
+        logger.debug("Removing FDF...")
         os.remove(paths[1])
     except (OSError, FileNotFoundError):
         # The FDF doesnt seem to exist, does the PDF?
+        logger.warning("Could not remove %s... Something's up..." % paths[1])
         assert os.path.exists(paths[0])
     return paths[0]

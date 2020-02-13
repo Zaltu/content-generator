@@ -34,7 +34,7 @@ def _generate_initial_data(player=None, level=None):
     # Level 1 HP
     stats["hp_max"] = aigis.dnd.CLASS_HP[stats["dndclass"]]
     # Level x HP
-    stats["hp_max"] += sum(aigis.dnd.xdy(stats["level"]-1, aigis.dnd.CLASS_HP[stats["dndclass"]]))
+    stats["hp_max"] += sum(aigis.dnd.xdy(aigis.dnd.CLASS_HP[stats["dndclass"]], stats["level"]-1))
 
     return stats
 
@@ -53,7 +53,7 @@ def generate_dnd_character(player=None, level=None):
 
     # TODO depending on class, generate chosen spells, etc...
 
-    paths = aigis.dnd.create_character_sheet(stats)
+    paths = aigis.dnd.create_character_sheet(DEFAULT_SAVE_PATH, stats)
     try:
         # Try and delete the .FDF, we don't care about it
         os.remove(paths[1])

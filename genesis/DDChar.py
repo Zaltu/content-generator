@@ -12,27 +12,27 @@ DEFAULT_SAVE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "tmp
 
 CHAR_ATTR_NAMES = {"strength", "dexterity", "intelligence", "wisdom", "constitution", "charisma"}
 
-def _generate_initial_data(player=None, level=None):
+def _generate_initial_data(**kwargs):
     """
     Generate the data used to auto-generate a D&D character.
 
-    :param str player: human player, defaults to the DM
-    :param int level: starting level, defaults to 1
+    :param kwargs: any user input parameters
 
     :returns: stats required to build a character
     :rtype: dict
     """
     stats = {
-        "name": fantasyName.generate(),
-        "player_name": player or DEFAULT_PLAYER_NAME,
-        "alignment": random.sample(aigis.dnd.ALIGNMENTS, 1)[0],
-        "level": level or 1,
-        "race": random.sample(aigis.dnd.RACES, 1)[0],
-        "class": random.sample(aigis.dnd.CLASSES, 1)[0]
+        "name": kwargs.get("name") or fantasyName.generate(),
+        "player_name": kwargs.get("player") or DEFAULT_PLAYER_NAME,
+        "alignment": kwargs.get("alignment") or random.sample(aigis.dnd.ALIGNMENTS, 1)[0],
+        "level": kwargs.get("level") or 1,
+        "race": kwargs.get("race") or random.sample(aigis.dnd.RACES, 1)[0],
+        "class": kwargs.get("class") or random.sample(aigis.dnd.CLASSES, 1)[0]
     }
     # Generate subclass if above level 3
     if stats["level"] > 2:
-        stats["subclass"] = random.sample(aigis.dnd.SUBCLASSES[stats["class"]], 1)[0]
+        stats["subclass"] = kwargs.get("subclass") or \
+                            random.sample(aigis.dnd.SUBCLASSES[stats["class"]], 1)[0]
     # Level 1 HP
     stats["hp_max"] = aigis.dnd.CLASS_HP[stats["class"]]
     # Level x HP
@@ -76,17 +76,16 @@ def _generate_attr_values():
 
 
 
-def generate_dnd_character(player=None, level=None):
+def generate_dnd_character(**kwargs):
     """
     Generate a D&D character sheet.
 
-    :param str player: human player, defaults to the DM
-    :param int level: starting level, defaults to 1
+    :param kwargs: any user input parameters
 
     :returns: path on disk to the generated character sheet
     :rtype: str
     """
-    stats = _generate_initial_data(player, level)
+    stats = _generate_initial_data(**kwargs)
     stats.update(_generate_attr_values())
 
     # TODO depending on class, generate chosen spells, etc...

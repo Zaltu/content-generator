@@ -62,14 +62,13 @@ class Genesis:
         """
         return lorem.text()
 
-    def dndchar(self, player=None, level=None):
+    def dndchar(self, **kwargs):
         """
         Get a D&D character
 
-        :param str player: human player, defaults to the DM
-        :param int level: starting level, defaults to 1
+        :param kwargs: any user input parameters
 
         :returns: path to a randomly generate D&D character sheet
         :rtype: str
         """
-        return DDChar.generate_dnd_character(player, level)
+        return DDChar.generate_dnd_character(**kwargs)

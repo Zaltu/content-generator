@@ -41,6 +41,12 @@ def _generate_initial_data(**kwargs):
 
     stats["background"] = kwargs.get("background") or random.sample(aigis.dnd.BACKGROUNDS, 1)[0]
 
+    stats["languages"] = kwargs.get("languages") or ", ".join(random.sample(aigis.dnd.LANGUAGES, 2))
+
+    stats["weapons"] = kwargs.get("weapons") or random.sample(aigis.dnd.WEAPONS, 2)
+
+    stats["armor"] = kwargs.get("armor") or random.sample(aigis.dnd.ARMOR, 1)[0]
+
     return stats
 
 

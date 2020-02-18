@@ -1,2 +1,7 @@
 # Ignore compiled Python
 __pycache__/
+
+# Ignore generated PDFs
+*.pdf
+# Just in case
+*.fdf

@@ -2,6 +2,7 @@
 Module to generate random D&D characters.
 """
 import os
+import math
 import random
 import aigis
 
@@ -37,6 +38,8 @@ def _generate_initial_data(**kwargs):
     stats["hp_max"] = aigis.dnd.CLASS_HP[stats["class"]]
     # Level x HP
     stats["hp_max"] += sum(aigis.dnd.xdy(aigis.dnd.CLASS_HP[stats["class"]], stats["level"]-1))
+
+    stats["background"] = kwargs.get("background") or random.sample(aigis.dnd.BACKGROUNDS, 1)[0]
 
     return stats
 
@@ -87,6 +90,9 @@ def generate_dnd_character(**kwargs):
     """
     stats = _generate_initial_data(**kwargs)
     stats.update(_generate_attr_values())
+
+    # Add CON mod to HP
+    stats["hp_max"] += (math.floor(int(stats["constitution"])/2 - 5)) * stats["level"]
 
     # TODO depending on class, generate chosen spells, etc...
 

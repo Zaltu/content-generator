@@ -6,7 +6,7 @@ import random
 FIRST_NAMES = [
     "Tordrick", "Alovar", "Sorel", "Urok", "Kerrilian", "Kruber", "Lian", "Bardin", "Lyra", "Eleanor",
     "Reginald", "Belethor", "Malakay", "Devan", "Nayeli", "Derrill", "Irvin", "Ollivander", "Keegan",
-    "Ulrich", "Gelendale", "Haley"
+    "Ulrich", "Gelendale", "Haley", "Festus",
 ]
 LAST_NAMES = [
     "Saltspyer", "Kibbler", "Ostanta", "Thiel", "Grimes"

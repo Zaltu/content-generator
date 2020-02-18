@@ -13,6 +13,10 @@ DEFAULT_SAVE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "tmp
 
 CHAR_ATTR_NAMES = {"strength", "dexterity", "intelligence", "wisdom", "constitution", "charisma"}
 
+# Ensure the tmp folder exists
+if not os.path.exists(os.path.abspath(os.path.join(os.path.dirname(__file__), "tmp"))):
+    os.makedirs(os.path.abspath(os.path.join(os.path.dirname(__file__), "tmp")))
+
 def _generate_initial_data(**kwargs):
     """
     Generate the data used to auto-generate a D&D character.

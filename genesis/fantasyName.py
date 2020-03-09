@@ -14,7 +14,7 @@ LAST_NAMES = [
 NAME_CHUNKS = [
     "fire", "wind", "hammer", "bright", "stone", "stalker", "tree", "trick", "foot", "arms", "steady",
     "bearer", "torch", "silk", "weaver", "smooth", "tongue", "beast", "brave", "heart", "forge", "wild",
-    "dark", "walker", "sharp", "quick", "high", "rod",
+    "dark", "walker", "sharp", "quick", "high", "rod", "song", "bird",
 ]
 
 def generate(composed=False):

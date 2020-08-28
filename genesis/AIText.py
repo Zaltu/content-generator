@@ -13,7 +13,7 @@ from transformers import GPT2Tokenizer, GPT2LMHeadModel
 
 
 # Total length of the paragraph to generate.
-PARAGRAPH_LENGTH = 500
+PARAGRAPH_LENGTH = 100
 # Max number of words to process at once.
 BREAKDOWN = 50
 # How long before the end of paragraph length the program should start looking for a period.

@@ -1,2 +1,4 @@
 Faker
 lorem
+torch==1.4.0
+transformsers==2.3.0

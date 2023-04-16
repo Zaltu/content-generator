@@ -8,20 +8,20 @@ from faker import Faker
 import lorem
 
 import DDChar
+import AIText
 
 class Genesis:
     """
     In the beginning there was the word, and the word was God, and the word is God.
 
-    :param bool include_ai: Set to true to include the GPT2 text AI module in genesis. This requires lots of
+    :param bool include_ai: Set to true to include the alpaca text AI module in genesis. This requires "lots" of
     RAM. For more requirement information, see the ReadMe.
     """
     __dummy_faker = Faker()
     ai = None
     def __init__(self, include_ai=False):
         if include_ai:
-            import AIText  # Grab some popcorn and get comfy
-            self.ai = AIText
+            self.ai = AIText.AIBOT()
 
     def __getattr__(self, attr):
         """
@@ -32,8 +32,10 @@ class Genesis:
         :returns: the correct module's implementation of the requested attribute
         :rtype: object
         """
-        if attr == "text" and self.ai:
-            return self.ai.speak
+        if attr == "text":
+            if self.ai:
+                return self.ai.chat
+            return AIText.from_prompt
 
         if hasattr(self.__dummy_faker, attr):
             def _wrapper(locale="en_US"):

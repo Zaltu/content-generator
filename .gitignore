@@ -8,4 +8,4 @@ __pycache__/
 
 # Ignore symlinks
 alpaca-chat
-ggml-alpaca-7b-q4.bin
+alpaca-model.bin

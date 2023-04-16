@@ -32,11 +32,6 @@ class Genesis:
         :returns: the correct module's implementation of the requested attribute
         :rtype: object
         """
-        if attr == "text":
-            if self.ai:
-                return self.ai.chat
-            return AIText.from_prompt
-
         if hasattr(self.__dummy_faker, attr):
             def _wrapper(locale="en_US"):
                 """
@@ -54,6 +49,32 @@ class Genesis:
             return _wrapper
 
         return self.__getattribute__(attr)
+    
+    def chat(self, prompt):
+        """
+        Submit input to chat. Arguably faster than prompt.
+        Falls back on prompt anyway if chat isn't enabled. No one will be able to tell the difference omegalul.
+
+        :param str prompt: Input prompt
+
+        :returns: AI generated text
+        :rtype: str
+        """
+        if self.ai:
+            return self.ai.chat(prompt)
+        return "Chat disabled."#self.prompt(prompt)
+    
+    def prompt(self, prompt):
+        """
+        Independent prompt in one-off setting.
+        Not worth using usually as chat is faster.
+
+        :param str prompt: Input prompt
+
+        :returns: AI generated text
+        :rtype: str
+        """
+        return AIText.from_prompt(prompt)
 
     def latin(self):
         """

@@ -61,18 +61,21 @@ def _call_web_api(prompt, neg_prompt, hr_fix=False, saveto=""):
     """
     payload = __getPayload(prompt, neg_prompt, hr_fix)
     gotbits = requests.post(TXT2IMG_URL, json=payload).json()
+    files = []
     n=1
     for i in gotbits['images']:
         image = Image.open(io.BytesIO(base64.b64decode(i.split(",",1)[0])))
         image.save(os.path.join(saveto, f"output{n}.png"))
+        files.append(os.path.join(saveto, f"output{n}.png"))
         n+=1
+    return files
 
 
 def generate_sd_image(prompt, hr_fix=False, saveto=""):
     """
     """
-    _call_web_api(prompt, NEG_PATTERN, hr_fix, saveto)
+    return _call_web_api(prompt, NEG_PATTERN, hr_fix, saveto)
 
 
 if __name__ == "__main__":
-    generate_sd_image("Black rock shooter")
+    print(generate_sd_image("Black rock shooter"))

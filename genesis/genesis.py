@@ -9,6 +9,7 @@ import lorem
 
 import DDChar
 import AIText
+import stablediffusion
 
 class Genesis:
     """
@@ -95,3 +96,15 @@ class Genesis:
         :rtype: str
         """
         return DDChar.generate_dnd_character(**kwargs)
+    
+    def image(self, **kwargs):
+        """
+        Generate an image using a locally running Automatic1111 stable diffusion
+        server.
+
+        :param kwargs: user input parameters
+
+        :returns: path to generated image on disk
+        :rtype: str
+        """
+        return stablediffusion.generate_sd_image(**kwargs)

@@ -1,12 +1,8 @@
 import os
 import io
-import re
 import base64
-import random
 import requests
 from PIL import Image
-from glob import glob
-from pprint import pprint as pp
 
 DEFAULT_DYNAMIC_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "sd-dynamic-gen"))
 TXT2IMG_URL = "http://127.0.0.1:7860/sdapi/v1/txt2img"
@@ -60,7 +56,7 @@ def __getPayload(prompt, neg_prompt, hr_fix=False):
     return thisPro
 
 
-def _call_web_api(prompt, neg_prompt, hr_fix=False):
+def _call_web_api(prompt, neg_prompt, hr_fix=False, saveto=""):
     """
     """
     payload = __getPayload(prompt, neg_prompt, hr_fix)
@@ -68,14 +64,14 @@ def _call_web_api(prompt, neg_prompt, hr_fix=False):
     n=1
     for i in gotbits['images']:
         image = Image.open(io.BytesIO(base64.b64decode(i.split(",",1)[0])))
-        image.save(f"output{n}.png")
+        image.save(os.path.join(saveto, f"output{n}.png"))
         n+=1
 
 
-def generate_sd_image(prompt):
+def generate_sd_image(prompt, hr_fix=False, saveto=""):
     """
     """
-    _call_web_api(prompt, NEG_PATTERN)
+    _call_web_api(prompt, NEG_PATTERN, hr_fix, saveto)
 
 
 if __name__ == "__main__":

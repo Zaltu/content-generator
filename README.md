@@ -10,7 +10,7 @@ print(g.name())
 
 # Dual Modes
 Genesis has two levels of functionality, normal and *hardcore*.  
-Harcore involves AI text generation, which has significantly higher requirements than normal. For this reason, there are two different sets of requirements.
+Harcore involves AI text generation, which requires manual installation and management of [alpaca.cpp](https://github.com/antimatter15/alpaca.cpp). For this reason, there are two different sets of requirements.
 
 Genesis objects are created in normal mode by default. To begin in hardcore mode, use instead:
 ```python
@@ -21,17 +21,15 @@ g = Genesis(include_ai=True)
 
 # Requirements
 Normal:
-- __*python3.7*__
+- __*python>=3.7*__
     - Faker
     - lorem
 
 Hardcore:
-- __*python3.7*__
-    - torch==1.4.0
-    - transformers==2.3.0
+- __*python3.10*__
     - Faker
     - lorem
-- Linux (tested on Ubuntu 1.19.1 and CentOS 7.4)
-- \>15GB free hard drive space
-- __*32GB RAM*__
+- Linux (tested on Ubuntu 22.04)
+- Compiled "`chat`" from [alpaca.cpp](https://github.com/antimatter15/alpaca.cpp), renamed/symlinked to `alpaca-chat` (and a model binary) slapped in the `genesis` folder.
+
 

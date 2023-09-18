@@ -11,14 +11,14 @@ def __getPayload(args):
     """
     """
     thisPro = cnt.REQUEST_PAYLOAD.copy()
-    thisPro["prompt"] = cnt.PATTERN.format(prompt=args.prompt)
-    thisPro["negative_prompt"] = cnt.NEG_PATTERN.format(neg_prompt=args.neg_prompt)
-    thisPro["seed"]: args.seed
-    thisPro["sampler_name"]: args.sampler
-    thisPro["n_iter"]: args.iter
-    thisPro["steps"]: args.steps
-    thisPro["cfg_scale"]: args.cfg_scale
-    thisPro["restore_faces"]: args.restore_faces
+    thisPro["prompt"] = args.prompt if args.no_defaults else cnt.PATTERN.format(prompt=args.prompt)
+    thisPro["negative_prompt"] = args.neg_prompt if args.no_defaults else cnt.NEG_PATTERN.format(neg_prompt=args.neg_prompt)
+    thisPro["seed"] = args.seed
+    thisPro["sampler_name"] = args.sampler
+    thisPro["n_iter"] = args.iter
+    thisPro["steps"] = args.steps
+    thisPro["cfg_scale"] = args.cfg_scale
+    thisPro["restore_faces"] = args.restore_faces
     if args.aspect_ratio:
         match args.aspect_ratio:
             case 's':
@@ -36,11 +36,11 @@ def __getPayload(args):
     
     if args.hires:
         thisHR = cnt.HR_PAYLOAD.copy()
-        thisHR["hr_prompt"] = cnt.PATTERN.format(prompt=args.prompt)
-        thisHR["hr_negative_prompt"] = cnt.NEG_PATTERN.format(neg_prompt=args.neg_prompt)
+        thisHR["hr_prompt"] = args.prompt if args.no_defaults else cnt.PATTERN.format(prompt=args.prompt)
+        thisHR["hr_negative_prompt"] = args.neg_prompt if args.no_defaults else cnt.NEG_PATTERN.format(neg_prompt=args.neg_prompt)
         thisHR["denoising_strength"] = args.denoising
         thisHR["hr_upscaler"] = args.upscaler
-        thisHR["hr_second_pass_steps"]: args.steps
+        thisHR["hr_second_pass_steps"] = args.steps
         thisPro.update(thisHR)
     
     if args.style:
@@ -83,10 +83,10 @@ def generate_sd_image_simple(prompt, hr_fix=False, saveto=""):
     return _call_web_api(data, saveto)
 
 
-def generate_sd_image(prompt, saveto=""):
+def generate_sd_image(command, saveto=""):
     """
     """
-    command = shlex.split(prompt)
+    command = shlex.split(command)
     args = cnt.ARGPARSER.parse_args(command)
     if isinstance(args, str):
         # Custom ArgumentParser returns str on error/help

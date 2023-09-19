@@ -11,50 +11,52 @@ def __getPayload(args):
     """
     """
     thisPro = cnt.REQUEST_PAYLOAD.copy()
-    thisPro["prompt"] = args.prompt if args.no_defaults else cnt.PATTERN.format(prompt=args.prompt)
-    thisPro["negative_prompt"] = args.neg_prompt if args.no_defaults else cnt.NEG_PATTERN.format(neg_prompt=args.neg_prompt)
-    thisPro["seed"] = args.seed
-    thisPro["sampler_name"] = args.sampler
-    thisPro["n_iter"] = args.iter
-    thisPro["steps"] = args.steps
-    thisPro["cfg_scale"] = args.cfg_scale
-    thisPro["restore_faces"] = args.restore_faces
+    # Attempt style setting first, allowing for overwrites.
+    if args.style:
+        for setting, value in cnt.STYLES[args.style]:
+            if setting in cnt.VALID_OVERRIDE_SETTINGS:
+                thisPro["override_settings"][setting] = value
+            else:
+                thisPro[setting] = value
+    xl = "XL" in thisPro.get("override_settings", {}).get("sd_model_checkpoint", "")
+
+    if args.no_defaults:
+        thisPro["prompt"] = args.prompt
+        thisPro["negative_prompt"] = args.neg_prompt
+    elif thisPro["prompt"] != None or thisPro["negative_prompt"] != None:
+        thisPro["prompt"] = thisPro["prompt"].format(prompt=args.prompt or "")
+        thisPro["negative_prompt"] = thisPro["negative_prompt"].format(neg_prompt=args.neg_prompt or "")
+    else:
+        thisPro["prompt"] = cnt.sdtemplates.PATTERN.format(prompt=args.prompt) if not xl else cnt.sdtemplates.PATTERN_XL.format(prompt=args.prompt)
+        thisPro["negative_prompt"] = cnt.sdtemplates.NEG_PATTERN.format(neg_prompt=args.prompt) if not xl else cnt.sdtemplates.NEG_PATTERN_XL.format(neg_prompt=args.prompt)
+    args.prompt = None
+    args.neg_prompt = None
+
+    for setting, value in args.__dict__.items():
+        if setting in thisPro and value:
+            thisPro[setting] = value
+
     if args.aspect_ratio:
         match args.aspect_ratio:
             case 's':
-                thisPro["width"] = 512
-                thisPro["height"] = 512
+                thisPro["width"] = 1024 if xl else 512
+                thisPro["height"] = 1024 if xl else 512
             case 'p':
-                thisPro["width"] = 600
-                thisPro["height"] = 752
+                thisPro["width"] = 1200 if xl else 600
+                thisPro["height"] = 1504 if xl else 752
             case 'l':
-                thisPro["width"] = 960
-                thisPro["height"] = 540
-    else:
-        thisPro["width"] = args.width
-        thisPro["height"] = args.height
+                thisPro["width"] = 1920 if xl else 960
+                thisPro["height"] = 1080 if xl else 540
     
     if args.hires:
         thisHR = cnt.HR_PAYLOAD.copy()
-        thisHR["hr_prompt"] = args.prompt if args.no_defaults else cnt.PATTERN.format(prompt=args.prompt)
-        thisHR["hr_negative_prompt"] = args.neg_prompt if args.no_defaults else cnt.NEG_PATTERN.format(neg_prompt=args.neg_prompt)
+        thisHR["hr_prompt"] = args.prompt if args.no_defaults else cnt.sdtemplates.PATTERN.format(prompt=args.prompt)
+        thisHR["hr_negative_prompt"] = args.neg_prompt if args.no_defaults else cnt.sdtemplates.NEG_PATTERN.format(neg_prompt=args.neg_prompt)
         thisHR["denoising_strength"] = args.denoising
         thisHR["hr_upscaler"] = args.upscaler
         thisHR["hr_second_pass_steps"] = args.steps
         thisPro.update(thisHR)
-    
-    if args.style:
-        args.model = cnt._STYLES[args.style][0]
-        args.vae = cnt._STYLES[args.style][1]
 
-    if args.model or args.vae or args.clipskip:
-        thisPro["override_settings"] = {}
-        if args.model:
-            thisPro["override_settings"]["sd_model_checkpoint"] = args.model
-        if args.vae:
-            thisPro["override_settings"]["sd_vae"] = args.vae
-        if args.clipskip:
-            thisPro["override_settings"]["CLIP_stop_at_last_layers"] = args.clipskip
     return thisPro
 
 
@@ -103,4 +105,4 @@ def generate_sd_image(command, saveto=""):
 
 
 if __name__ == "__main__":
-    print(generate_sd_image("'black rock shooter' -ar p -s drawing"))
+    print(generate_sd_image("'black rock shooter' -ar p -s anime"))

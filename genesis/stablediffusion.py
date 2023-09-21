@@ -1,5 +1,6 @@
 import os
 import io
+import copy
 import shlex
 import base64
 import requests
@@ -10,7 +11,7 @@ from lib import sdconsts as cnt
 def __getPayload(args):
     """
     """
-    thisPro = cnt.REQUEST_PAYLOAD.copy()
+    thisPro = copy.deepcopy(cnt.REQUEST_PAYLOAD)
     # Attempt style setting first, allowing for overwrites.
     if args.style:
         for setting, value in cnt.STYLES[args.style]:
@@ -94,7 +95,7 @@ def generate_sd_image(command, saveto=""):
         # Custom ArgumentParser returns str on error/help
         return args
     if args.print_defaults:
-        return f"POSITIVE PROMPT:{cnt.PATTERN}\n\nNEGATIVE PROMPT:{cnt.NEG_PATTERN}"
+        return f"POSITIVE PROMPT:{cnt.sdtemplates.PATTERN}\n\nNEGATIVE PROMPT:{cnt.sdtemplates.NEG_PATTERN}"
 
     print(args)
     data = __getPayload(args)

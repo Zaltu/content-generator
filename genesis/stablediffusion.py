@@ -100,7 +100,7 @@ def generate_sd_image(command, saveto=""):
     print(args)
     data = __getPayload(args)
     print(data)
-    return _call_web_api(data, saveto="")
+    return _call_web_api(data, saveto)
 
 
 

@@ -53,7 +53,7 @@ ARGPARSER.add_argument("--aspect-ratio", "-ar", choices=["p", "l", 's'], default
 ARGPARSER.add_argument("--width", "-wi", type=int, help="Pixel height.")
 ARGPARSER.add_argument("--height", "-hi", type=int, help="Pixel width.")
 
-ARGPARSER.add_argument("--no-defaults", "-nd", action="store_true", default=False, help="Flag if you absolutely don't want the default positive/negative prompts.")
+ARGPARSER.add_argument("--with-15-defaults", "-wd", action="store_true", default=False, help="Flag if you absolutely don't want the default positive/negative prompts.")
 ARGPARSER.add_argument("--print-defaults", "-d", action="store_true", default=False, help="Flag to print the default positive/negative prompts. No image generation, other arguments are ignored.")
 
 ARGPARSER.add_argument("--hires", "-hr", action="store_true", default=False, help="Enable Hi-Res fix. Doubles resolution and improves quality at the expense of processing time.")

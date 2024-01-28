@@ -73,10 +73,10 @@ REQUEST_PAYLOAD = {
     "seed": -1,
     "sampler_name": "DPM++ 2M SDE Karras",
     "n_iter": 1,
-    "steps": 25,
-    "cfg_scale": 7,
-    "width": 512,
-    "height": 512,
+    "steps": 30,
+    "cfg_scale": 3,
+    "width": 1024,
+    "height": 1024,
     "restore_faces": False,
     "override_settings":{}
 }

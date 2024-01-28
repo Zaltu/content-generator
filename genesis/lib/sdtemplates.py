@@ -37,9 +37,7 @@ class SDTemplate():
 ANIME = SDTemplate(
     sd_model_checkpoint="XL_explicitFreedomNSFW_beta",
     sd_vae="sdxl_vae.safetensors",
-    height=1200,
-    width=1024,
-    cfg_scale=6,
+    cfg_scale=4,
     CLIP_stop_at_last_layers=1,
     prompt="""{prompt}
     4k, 8k, masterpiece, very high quality, hdr, professional digital artwork, key art, beautiful anime art

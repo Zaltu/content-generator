@@ -21,7 +21,7 @@ def __getPayload(args):
                 thisPro[setting] = value
     xl = "XL" in thisPro.get("override_settings", {}).get("sd_model_checkpoint", "")
 
-    if not args.with_15_defaults:
+    if not args.old_defaults:
         thisPro["prompt"] = args.prompt
         thisPro["negative_prompt"] = args.neg_prompt
     elif thisPro["prompt"] != None or thisPro["negative_prompt"] != None:

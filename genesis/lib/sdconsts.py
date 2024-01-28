@@ -50,17 +50,17 @@ ARGPARSER.add_argument("--cfg-scale", "-cfg", type=int, help="Classifier Free Gu
 ARGPARSER.add_argument("--sampler", choices=_SAMPLERS, dest="sampler_name", default="DPM++ 2M SDE Karras", help="Specify sampler. Esoteric mostly, but can affect how many steps needed to achieve decent image and how much variation per step.")
 
 ARGPARSER.add_argument("--aspect-ratio", "-ar", choices=["p", "l", 's'], default=None, help="Specify aspect ratio. p for portrait, l for landscape, s for square. Overrides height and width settings.")
-ARGPARSER.add_argument("--width", "-wi", type=int, help="Pixel height.")
-ARGPARSER.add_argument("--height", "-hi", type=int, help="Pixel width.")
+ARGPARSER.add_argument("--width", "-x", type=int, help="Pixel height.")
+ARGPARSER.add_argument("--height", "-y", type=int, help="Pixel width.")
 
-ARGPARSER.add_argument("--with-15-defaults", "-wd", action="store_true", default=False, help="Flag if you absolutely don't want the default positive/negative prompts.")
+ARGPARSER.add_argument("--old-defaults", "-od", action="store_true", default=False, help="Flag if you want the SD1.5 default positive/negative prompts.")
 ARGPARSER.add_argument("--print-defaults", "-d", action="store_true", default=False, help="Flag to print the default positive/negative prompts. No image generation, other arguments are ignored.")
 
 ARGPARSER.add_argument("--hires", "-hr", action="store_true", default=False, help="Enable Hi-Res fix. Doubles resolution and improves quality at the expense of processing time.")
 ARGPARSER.add_argument("--denoising", "-dn", type=float, default=0.3, help="HR FIX - Denoising strength, between 0-1. The higher it is, the further away from the original.")
 ARGPARSER.add_argument("--upscaler", "-us", choices=_UPSCALERS, default="8x_NMKD-Superscale_150000_G", help="HR FIX - Hires upscaler. Different sharpness results for different styles.")
 
-ARGPARSER.add_argument("--style", "-s", choices=STYLES.keys(), default=None, help="Setting a style will pick a specific model and VAE. WARNING - Changing loaded model takes time.")
+ARGPARSER.add_argument("--style", choices=STYLES.keys(), default=None, help="Setting a style will pick a specific model and VAE. WARNING - Changing loaded model takes time.")
 
 ARGPARSER.add_argument("--model", help="ADMIN - Exact model to use. You probably don't know.")
 ARGPARSER.add_argument("--vae", help="ADMIN - Exact VAE to use. You probably don't know.")

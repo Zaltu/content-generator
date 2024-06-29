@@ -47,7 +47,7 @@ ARGPARSER.add_argument("--seed", type=int, default=-1, help="Specify seed. Usefu
 ARGPARSER.add_argument("--iter", "-i", type=int, default=1, dest="n_iter", help="Number of images to generate. 1-4")
 ARGPARSER.add_argument("--steps", type=int, default=25, help="Number of sampling steps. Between 20-40 usually.")
 ARGPARSER.add_argument("--cfg-scale", "-cfg", type=int, help="Classifier Free Guidance scale. usually between 3-15. Heuristically, determines how closely to the prompt the image must be generated. The SD version of top_p.")
-ARGPARSER.add_argument("--sampler", choices=_SAMPLERS, dest="sampler_name", default="DPM++ 2M SDE Karras", help="Specify sampler. Esoteric mostly, but can affect how many steps needed to achieve decent image and how much variation per step.")
+ARGPARSER.add_argument("--sampler", choices=_SAMPLERS, dest="sampler_name", default="DPM++ 3M SDE", help="Specify sampler. Esoteric mostly, but can affect how many steps needed to achieve decent image and how much variation per step.")
 
 ARGPARSER.add_argument("--aspect-ratio", "-ar", choices=["p", "l", 's'], default=None, help="Specify aspect ratio. p for portrait, l for landscape, s for square. Overrides height and width settings.")
 ARGPARSER.add_argument("--width", "-x", type=int, help="Pixel height.")

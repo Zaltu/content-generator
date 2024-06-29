@@ -106,4 +106,4 @@ def generate_sd_image(command, saveto=""):
 
 
 if __name__ == "__main__":
-    print(generate_sd_image("'black rock shooter' -ar p -s anime"))
+    print(generate_sd_image("'black rock shooter' -ar p --style anime"))
